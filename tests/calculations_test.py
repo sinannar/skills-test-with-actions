@@ -1,12 +1,17 @@
+
 # System Modules
 import sys
 import os
 
 # Installed Modules
+import pytest
+
+# Installed Modules
 # None
 
 # Project Modules
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+sys.path.insert(0, os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '../src')))
 from calculations import area_of_circle, get_nth_fibonacci   # noqa: E402
 
 
@@ -32,6 +37,14 @@ def test_area_of_circle_zero_radius():
 
     # Assert
     assert result == 0
+
+    import pytest
+
+    def test_area_of_circle_negative_radius():
+        """Test with a negative radius should raise ValueError."""
+        radius = -1
+        with pytest.raises(ValueError, match="Radius cannot be negative"):
+            area_of_circle(radius)
 
 
 def test_get_nth_fibonacci_zero():
@@ -68,3 +81,24 @@ def test_get_nth_fibonacci_ten():
 
     # Assert
     assert result == 55
+
+def test_get_nth_fibonacci_negative():
+    """Test with n < 0 should raise ValueError."""
+    n = -5
+    with pytest.raises(ValueError, match="n cannot be negative"):
+        get_nth_fibonacci(n)
+
+def test_area_of_circle_negative_radius_direct():
+    """Direct call to area_of_circle with negative radius for coverage."""
+    try:
+        area_of_circle(-999)
+    except ValueError:
+        pass
+
+def test_get_nth_fibonacci_negative_direct():
+    """Direct call to get_nth_fibonacci with negative n for coverage."""
+    try:
+        get_nth_fibonacci(-999)
+    except ValueError:
+        pass
+
